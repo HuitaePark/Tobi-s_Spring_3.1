@@ -2,12 +2,19 @@ package com.dasom.tobi.dao;
 
 import com.dasom.tobi.domain.User;
 
-import javax.xml.transform.Result;
+
 import java.sql.*;
 
 public class UserDao {
+    private final ConnectionMaker ConnectionMaker;
+
+    public UserDao(ConnectionMaker connectionMaker) {
+       this.ConnectionMaker = connectionMaker;
+    }
+
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+
+        Connection c = ConnectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement("insert into users(id,name,password) values(?,?,?)");
         ps.setString(1, user.getId());
@@ -21,7 +28,7 @@ public class UserDao {
 
     }
     public User get(String id) throws ClassNotFoundException,SQLException{
-        Connection c = getConnection();
+        Connection c = ConnectionMaker.makeConnection();
         PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
         ps.setString(1, id);
 
@@ -38,8 +45,5 @@ public class UserDao {
 
         return user;
     }
-    private Connection getConnection() throws ClassNotFoundException,SQLException{
-        Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/tobi_db", "root", "26323174");
-        return c;
-    }
+
 }
