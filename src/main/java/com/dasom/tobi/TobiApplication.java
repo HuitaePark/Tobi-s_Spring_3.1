@@ -1,5 +1,7 @@
 package com.dasom.tobi;
 
+import com.dasom.tobi.dao.ConnectionMaker;
+import com.dasom.tobi.dao.DConnectionMakeer;
 import com.dasom.tobi.dao.UserDao;
 import com.dasom.tobi.domain.User;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +15,8 @@ public class TobiApplication {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         SpringApplication.run(TobiApplication.class, args);
 
-        UserDao dao = new UserDao();
+        ConnectionMaker DConnectionMaker = new DConnectionMakeer(); // 어디 회사의 DB든 커넥션 메이커만 연결해주면 됨
+        UserDao dao = new UserDao(DConnectionMaker); // N회사의 DB면 NConnentionMaker로 바꿔주면 된다
 
         User user = new User();
         user.setId("mmmzzi");
