@@ -37,6 +37,8 @@ public class UserDaoTest {
     public void addAndGet() throws SQLException, ClassNotFoundException {
         ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
         UserDao dao = ac.getBean("userDao", UserDao.class); // 빈 이름을 수정한 부분
+        dao.deleteAll();
+        assertThat(dao.getCount()).isEqualTo(0);
 
         User user = new User();
         user.setId("hong");
@@ -44,6 +46,7 @@ public class UserDaoTest {
         user.setPassword("1234");
 
         dao.add(user);
+        assertThat(dao.getCount()).isEqualTo(1);
 
         User user2 = dao.get(user.getId());
 
