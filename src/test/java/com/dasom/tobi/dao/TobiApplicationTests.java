@@ -1,4 +1,4 @@
-package com.dasom.tobi;
+package com.dasom.tobi.dao;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

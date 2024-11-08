@@ -1,21 +1,31 @@
-package com.dasom.tobi;
-import com.dasom.tobi.dao.DaoFactory;
-import com.dasom.tobi.dao.UserDao;
+package com.dasom.tobi.dao;
 import com.dasom.tobi.domain.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
+@SpringJUnitConfig(DaoFactory.class) //RunWith과 ContextConfiguration을 Junit에선 이렇게 씀
 public class UserDaoTest {
+    private UserDao dao;
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @BeforeEach
+    public void setUp(){
+        this.dao = applicationContext.getBean("userDao", UserDao.class);
+    }
+
     @Test
     public void DaoTest() throws SQLException, ClassNotFoundException {
-        ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
-        UserDao dao = ac.getBean("userDao", UserDao.class);
 
         User user = new User();
         user.setId("heetae");
@@ -35,8 +45,7 @@ public class UserDaoTest {
 
     @Test
     public void addAndGet() throws SQLException, ClassNotFoundException {
-        ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
-        UserDao dao = ac.getBean("userDao", UserDao.class); // 빈 이름을 수정한 부분
+
 
         User user1 = new User("aaaa","유제승","1234");
         User user2 = new User("bbbb","박희태","1234");
@@ -60,9 +69,6 @@ public class UserDaoTest {
     @Test
     public void count() throws SQLException,ClassNotFoundException{
 
-        ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
-
-        UserDao dao = ac.getBean("userDao",UserDao.class);
         User user1 = new User("aaaa","유제승","1234");
         User user2 = new User("bbbb","박희태","1234");
         User user3 = new User("cccc","이현민","1234");
@@ -78,6 +84,16 @@ public class UserDaoTest {
 
         dao.add(user3);
         assertThat(dao.getCount()).isEqualTo(3);
+    }
+    @Test
+    public void getUserFailure() throws SQLException, ClassNotFoundException {
+
+        dao.deleteAll();
+        assertThat(dao.getCount()).isEqualTo(0);
+
+        assertThrows(EmptyResultDataAccessException.class, () -> {
+            dao.get("unknown_id");
+        });
     }
 }
 
