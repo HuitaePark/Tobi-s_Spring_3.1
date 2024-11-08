@@ -1,7 +1,5 @@
-package com.dasom.tobi;
+package com.dasom.tobi.dao;
 
-import com.dasom.tobi.dao.CountingConnectionMaker;
-import com.dasom.tobi.dao.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
