@@ -55,23 +55,21 @@ public class UserDao {
 
         try {
             c = dataSource.getConnection();
-            preparedStatement = c.prepareStatement("delete from users");
+            preparedStatement = makeStatement(c);
             preparedStatement.executeUpdate();
         }catch(SQLException e){
             throw e;
         }
         finally {
-            if (preparedStatement !=null){
-                try {
-                    preparedStatement.close();
-                }catch (SQLException e){
-
-                }
-            }
-            if (c != null){
-                try{c.close();}catch (SQLException e){}
-            }
+            if (preparedStatement !=null){try {preparedStatement.close();}catch (SQLException e){}}
+            if (c != null){try{c.close();}catch (SQLException e){}}
         }
+    }
+
+    private PreparedStatement makeStatement(Connection c) throws SQLException{
+        PreparedStatement preparedStatement;
+        preparedStatement = c.prepareStatement("delete from users");
+        return preparedStatement;
     }
 
     public int getCount() throws SQLException, ClassNotFoundException {
@@ -94,5 +92,6 @@ public class UserDao {
             if(c!=null){try{c.close();}catch(SQLException e){}}
         }
     }
+
 
 }
