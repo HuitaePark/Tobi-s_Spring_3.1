@@ -7,7 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import javax.sql.DataSource;
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
     private DataSource dataSource;
 
 
@@ -50,23 +50,10 @@ public abstract class UserDao {
         return user;
     }
     public void deleteAll() throws Exception {
-        Connection c = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            c = dataSource.getConnection();
-            preparedStatement = makeStatement(c);
-            preparedStatement.executeUpdate();
-        }catch(SQLException e){
-            throw e;
-        }
-        finally {
-            if (preparedStatement !=null){try {preparedStatement.close();}catch (SQLException e){}}
-            if (c != null){try{c.close();}catch (SQLException e){}}
-        }
+        StatementStrategy st = new DeleteAllStatement();
+        jdbcContextWithStatementStrategy(st);
     }
 
-    abstract protected PreparedStatement makeStatement(Connection c) throws SQLException;
 
 
 
@@ -86,6 +73,22 @@ public abstract class UserDao {
         throw e;
        }finally {
             if(resultSet!=null){try{resultSet.close();}catch(SQLException e){}}
+            if(preparedStatement!=null){try{preparedStatement.close();}catch(SQLException e){}}
+            if(c!=null){try{c.close();}catch(SQLException e){}}
+        }
+    }
+
+    public void jdbcContextWithStatementStrategy(StatementStrategy statementStrategy) throws SQLException{
+
+        Connection c = null;
+        PreparedStatement preparedStatement = null;
+        try{
+            c = dataSource.getConnection();
+            preparedStatement = statementStrategy.makePreparedStatement(c);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            throw e;
+        }finally {
             if(preparedStatement!=null){try{preparedStatement.close();}catch(SQLException e){}}
             if(c!=null){try{c.close();}catch(SQLException e){}}
         }
