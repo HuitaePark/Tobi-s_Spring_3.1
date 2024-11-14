@@ -75,18 +75,24 @@ public class UserDao {
     }
 
     public int getCount() throws SQLException, ClassNotFoundException {
-        Connection c = dataSource.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Connection c = null;
 
-        PreparedStatement ps = c.prepareStatement("select count(*) from users");
+        try{
+             c = dataSource.getConnection();
+            preparedStatement = c.prepareStatement("select count(*) from users");
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1);
 
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        int count = rs.getInt(1);
-
-        rs.close();
-        ps.close();
-        c.close();
-        return count;
+        }catch (SQLException e){
+        throw e;
+       }finally {
+            if(resultSet!=null){try{resultSet.close();}catch(SQLException e){}}
+            if(preparedStatement!=null){try{preparedStatement.close();}catch(SQLException e){}}
+            if(c!=null){try{c.close();}catch(SQLException e){}}
+        }
     }
 
 }
