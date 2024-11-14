@@ -15,11 +15,21 @@ public class UserDao {
         this.dataSource = dataSource;
     }
 
-    public void add(User user) throws ClassNotFoundException, SQLException {
+    public void add(final User user) throws ClassNotFoundException, SQLException {
 
 
-        StatementStrategy st = new AddStatement(user);
-        jdbcContextWithStatementStrategy(st);
+        jdbcContextWithStatementStrategy(
+                new StatementStrategy() {
+            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                PreparedStatement preparedStatement = c.prepareStatement("insert into users(id,name,password) values(?,?,?)");
+
+                preparedStatement.setString(1, user.getId());
+                preparedStatement.setString(2, user.getName());
+                preparedStatement.setString(3, user.getPassword());
+
+                return preparedStatement;
+            }
+        });
     }
     public User get(String id) throws ClassNotFoundException,SQLException {
         Connection c = dataSource.getConnection();
@@ -41,8 +51,13 @@ public class UserDao {
         return user;
     }
     public void deleteAll() throws Exception {
-        StatementStrategy st = new DeleteAllStatement();
-        jdbcContextWithStatementStrategy(st);
+        jdbcContextWithStatementStrategy(
+                new StatementStrategy(){
+                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                        PreparedStatement preparedStatement = c.prepareStatement("delete from users");
+                        return preparedStatement;
+                    }
+                });
     }
 
 
