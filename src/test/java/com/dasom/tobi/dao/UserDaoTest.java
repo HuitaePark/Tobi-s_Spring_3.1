@@ -47,7 +47,7 @@ public class UserDaoTest {
     public void addAndGet() throws SQLException, ClassNotFoundException {
 
 
-        User user1 = new User("aaaa","유제승","1234");
+        User user1 = new User("aaaa","박명지","1234");
         User user2 = new User("bbbb","박희태","1234");
 
         dao.deleteAll();
