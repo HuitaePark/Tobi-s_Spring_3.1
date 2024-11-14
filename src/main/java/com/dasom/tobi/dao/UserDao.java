@@ -7,7 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class UserDao {
+public abstract class UserDao {
     private DataSource dataSource;
 
 
@@ -66,11 +66,9 @@ public class UserDao {
         }
     }
 
-    private PreparedStatement makeStatement(Connection c) throws SQLException{
-        PreparedStatement preparedStatement;
-        preparedStatement = c.prepareStatement("delete from users");
-        return preparedStatement;
-    }
+    abstract protected PreparedStatement makeStatement(Connection c) throws SQLException;
+
+
 
     public int getCount() throws SQLException, ClassNotFoundException {
         PreparedStatement preparedStatement = null;
