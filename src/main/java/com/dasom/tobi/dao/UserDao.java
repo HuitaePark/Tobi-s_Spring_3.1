@@ -36,13 +36,7 @@ public class UserDao {
     }
 
     public void deleteAll() throws Exception {
-        this.jdbcContext.workWithStatementStrategy(
-                new StatementStrategy(){
-                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-                        PreparedStatement preparedStatement = c.prepareStatement("delete from users");
-                        return preparedStatement;
-                    }
-                });
+        executeSql("delete from users");
     }
 
     public User get(String id) throws ClassNotFoundException,SQLException {
@@ -84,6 +78,16 @@ public class UserDao {
             if(preparedStatement!=null){try{preparedStatement.close();}catch(SQLException e){}}
             if(c!=null){try{c.close();}catch(SQLException e){}}
         }
+    }
+    public void executeSql(final String query) throws SQLException{
+        this.jdbcContext.workWithStatementStrategy(
+                new StatementStrategy() {
+                    @Override
+                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                        return c.prepareStatement(query);
+                    }
+                }
+        );
     }
 
 

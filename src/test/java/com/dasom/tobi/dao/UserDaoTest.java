@@ -95,5 +95,6 @@ public class UserDaoTest {
             dao.get("unknown_id");
         });
     }
+
 }
 
