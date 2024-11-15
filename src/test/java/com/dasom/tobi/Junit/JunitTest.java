@@ -1,4 +1,4 @@
-package com.dasom.tobi.junit;
+package com.dasom.tobi.Junit;
 
 import com.dasom.tobi.dao.DaoFactory;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 
 @SpringJUnitConfig(DaoFactory.class)
