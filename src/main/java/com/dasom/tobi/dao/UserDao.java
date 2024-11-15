@@ -2,6 +2,7 @@ package com.dasom.tobi.dao;
 
 import com.dasom.tobi.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 
 import javax.sql.DataSource;
@@ -9,13 +10,17 @@ import java.sql.*;
 
 public class UserDao {
     private DataSource dataSource;
-    private final JdbcContext jdbcContext;
+    private  JdbcContext jdbcContext;
+    private JdbcTemplate jdbcTemplate;
 
+    public UserDao() {}
     public UserDao(JdbcContext jdbcContext) {
         this.jdbcContext = jdbcContext;
     }
 
+
     public void setDataSource(DataSource dataSource){
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.dataSource = dataSource;
     }
 
@@ -36,7 +41,7 @@ public class UserDao {
     }
 
     public void deleteAll() throws Exception {
-        executeSql("delete from users");
+        this.jdbcContext.executeSql("delete from users");
     }
 
     public User get(String id) throws ClassNotFoundException,SQLException {
@@ -79,16 +84,7 @@ public class UserDao {
             if(c!=null){try{c.close();}catch(SQLException e){}}
         }
     }
-    public void executeSql(final String query) throws SQLException{
-        this.jdbcContext.workWithStatementStrategy(
-                new StatementStrategy() {
-                    @Override
-                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-                        return c.prepareStatement(query);
-                    }
-                }
-        );
-    }
+
 
 
 

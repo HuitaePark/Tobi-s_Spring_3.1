@@ -57,13 +57,13 @@ public class UserDaoTest {
         dao.add(user2);
         assertThat(dao.getCount()).isEqualTo(2);
 
-        User userget1 = dao.get(user1.getId());
-        assertThat(userget1.getName()).isEqualTo(user1.getName());
-        assertThat(userget1.getPassword()).isEqualTo(user1.getPassword());
+        User userGet1 = dao.get(user1.getId());
+        assertThat(userGet1.getName()).isEqualTo(user1.getName());
+        assertThat(userGet1.getPassword()).isEqualTo(user1.getPassword());
 
-        User userget2 = dao.get(user2.getId());
-        assertThat(userget2.getName()).isEqualTo(user2.getName());
-        assertThat(userget2.getPassword()).isEqualTo(user2.getPassword());
+        User userGet2 = dao.get(user2.getId());
+        assertThat(userGet2.getName()).isEqualTo(user2.getName());
+        assertThat(userGet2.getPassword()).isEqualTo(user2.getPassword());
     }
 
     @Test
