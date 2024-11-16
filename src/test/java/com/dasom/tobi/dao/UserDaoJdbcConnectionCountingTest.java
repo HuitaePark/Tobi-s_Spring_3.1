@@ -5,11 +5,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import java.sql.SQLException;
 
-public class UserDaoConnectionCountingTest {
+public class UserDaoJdbcConnectionCountingTest {
     @Test
     public void CountingTest() throws ClassNotFoundException, SQLException {
         AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext();
-        UserDao dao = ac.getBean("userDao",UserDao.class);
+        UserDaoJdbc dao = ac.getBean("userDao", UserDaoJdbc.class);
         //
         // DAO 사용 코드
         //
