@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -13,15 +14,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringJUnitConfig(DaoFactory.class) //RunWith과 ContextConfiguration을 Junit에선 이렇게 씀
-public class UserDaoTest {
-    private UserDao dao;
+public class UserDaoJdbcTest {
+    private UserDaoJdbc dao;
 
     @Autowired
     private ApplicationContext applicationContext;
 
     @BeforeEach
     public void setUp(){
-        this.dao = applicationContext.getBean("userDao", UserDao.class);
+        this.dao = applicationContext.getBean("userDao", UserDaoJdbc.class);
     }
 
     @Test
@@ -95,6 +96,7 @@ public class UserDaoTest {
             dao.get("unknown_id");
         });
     }
+
 
 }
 

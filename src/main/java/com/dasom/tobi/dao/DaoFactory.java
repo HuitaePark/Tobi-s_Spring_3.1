@@ -9,17 +9,17 @@ import javax.sql.DataSource;
 @Configuration //어플리케이션 컨텍스트 또는 빈 팩토리가 사용할 설정정보
 public class DaoFactory {
     @Bean
-    public UserDao userDao(){
-        UserDao userDao = new UserDao();
-        userDao.setDataSource(dataSource());
+    public UserDaoJdbc userDao(){
+        UserDaoJdbc userDaoJdbc = new UserDaoJdbc();
+        userDaoJdbc.setDataSource(dataSource());
 
-        return userDao;
+        return userDaoJdbc;
     }
 //    public AccountDao accountDao(){
-//        return new UserDao(connectionMaker());
+//        return new UserDaoJdbc(connectionMaker());
 //    }
 //    public MessageDao MessageDao(){
-//        return new UserDao(connectionMaker());
+//        return new UserDaoJdbc(connectionMaker());
 //    }
     @Bean // 오브젝트 생성을 담당하는 IoC용 메소드
     public ConnectionMaker connectionMaker(){
